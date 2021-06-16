@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Bootstrap</title>
+		<meta name="author" content="Elias Brandtner">
+		<script src="../js/script.js"></script>
+
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">	
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-range/4.0.2/moment-range.js"></script>
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+		<link rel="stylesheet" href="../css/style.css">
+	</head>
+	<body onload="loadArztTable()">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		  <a class="navbar-brand"  href="../../index.html">Terminverwaltung</a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		  </button>
+
+		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+			  <li class="nav-item" id="PatientenButton" style="font-weight: normal;">
+				<a class="nav-link" href="../../index.html">Patienten</a>
+			  </li>
+			  
+			  <li class="nav-item" id="AerzteButton" style="font-weight: bold;">
+				<a class="nav-link" onclick="window.location.reload()">Ärzte</a>
+			  </li>
+			</ul>
+		  </div>
+		</nav>
+
+		<div class="arzthomepage">
+			<div id="aerzte1" style="display: block">
+				<div id="arzthome" style="display: normal">
+					<table id="arzttable" class="table">
+						<!--Ärzte-->
+					</table>
+
+					<button onclick="toggleArztVisibility()">Neuen Arzt anlegen</button>
+				</div>
+			</div>
+
+            <div id="addnewarzt" style="display: none">
+                <h2>Neuen Arzt anlegen</h2>
+                <h4>Titel</h4> <input id="titel" value="">
+                <h4>Vorname</h4> <input id="vorname" value="">
+                <h4>Nachname</h4> <input id="nachname" value="">
+                <h4>Fach</h4> <input id="fach">
+                <h4>Telefon</h4> <input id="telefon" value="">
+                <h4>Email</h4> <input id="mail" value="">
+                <h4>Straße</h4> <input id="strasse" value="">
+                <h4>PLZ</h4> <input id="plz">
+                <h4>Ort</h4> <input id="ort" value=""> 
+                
+                <br>
+                <br>
+
+                <button onclick="newArzt()">Hinzufügen</button>
+            </div>
+
+            <div id="editArzt" style="display: none">
+                <h2>Arzt bearbeiten</h2>
+                <h4>Titel</h4> <input id="edittitel" value="">
+                <h4>Vorname</h4> <input id="editvorname" value="">
+                <h4>Nachname</h4> <input id="editnachname" value="">
+                <h4>Fach</h4> <input id="editfach">
+                <h4>Telefon</h4> <input id="edittelefon" value="">
+                <h4>Email</h4> <input id="editmail" value="">
+                <h4>Straße</h4> <input id="editstrasse" value="">
+                <h4>PLZ</h4> <input id="editplz">
+                <h4>Ort</h4> <input id="editort" value=""> 
+                <br>
+                <br>
+
+                <button id="editArztbutton">Ändern</button>
+                <button id="deletebutton">Löschen</button>
+
+				<div id="dialog-confirm" title="Arzt Löschen">
+					<p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Der Arzt wird permanent gelöscht. Sind Sie sich sicher?</p>
+				</div>
+
+            </div>
+        </div>
+		<div id="arzttermine">
+			<div id="terminheader">
+				<h2 id="termineueberschrift">Die Termine von Arzt... werden Angezeigt</h2>
+				<div id="terminheaderbutton">
+					<button id="terminbutton" >Neue Terminslots anlegen</button>
+				</div>
+			</div>
+			
+			<br>
+
+			<div>
+				<div id="TerminInputs">
+					<!--Inputs-->
+				</div>
+			
+	
+				<form id="TerminArten">
+					<fieldset>
+					  <input type="radio" id="gebuchteTermine" name="gebuchteTermine" value="gebucht" checked="checked">
+					  <label for="gebuchteTermine">Gebuchte Termine</label> 
+					  <input type="radio" id="ungebuchteTermine" name="ungebuchteTermine" value="ungebucht" >
+					  <label for="ungebuchteTermine">Ungebuchte Termine</label> 
+					</fieldset>
+				</form>
+			</div>
+			
+			<div>
+				<table id="termintabelle"  class="table">
+					<!--Termintabelle-->
+				</table>
+			</diV>
+			<div>
+				<button id="backToAerzte">Zurück</button>
+			</div>
+		</div>
+		<div id="newTermine">
+			<div id="newterminheader">
+				<h2 id="newtermineueberschrift">Neuer Terminslot anlegen...</h2>
+			</div>
+			
+			<br>
+			<br>
+			
+			
+			<div>
+				<div>
+					<h4>Datum</h4> <input id="datumfield" type="date" value="">
+					<h4>Beginn</h4> <input id="beginnfield" type="time" value="">
+					<h4>Dauer in Minuten</h4> <input id="dauerfield" value="" type="number">
+					
+					<br>
+					<br>
+	
+					<button id=newTerminButton>Hinzufügen</button>
+					<button id="backToTable">Zurück</button>
+				</div>
+			</div>
+			<div id="dialog" title="Terminüberschneidung">
+				<p>Der Termin hat eine überschneidung</p>
+			</div>
+		</div>
+	</div>
+		
+	</body>
+</html>
+
+
