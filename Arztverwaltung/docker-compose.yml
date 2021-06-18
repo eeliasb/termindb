@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_USER: api
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_PASSOWORD: password
+      MYSQL_DATABASE: termineDB
+    volumes:
+      - ./DB:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+  api:
+    build: ./server
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 8080:5000
+  web:
+    build: ./client
+    restart: always
+    depends_on:
+      - api
+    ports:
+      - 80:80

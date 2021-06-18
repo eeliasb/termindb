@@ -1,3 +1,5 @@
+var GlobalURL = "http://medcourse.spengergasse.at/"
+
 function setVisibilityofPatienten() {
 	document.getElementById("patienten1").style.display = "block";
   document.getElementById("termine1").style.display = "none";
@@ -70,13 +72,13 @@ function loadPatientTable() {
     }
   };
 
-  xhttp.open("GET", "http://127.0.0.1:5000/patient", true);
+  xhttp.open("GET", GlobalURL + "patient", true);
   xhttp.send();
   xhttp
 }
   
 async function newPatient() {
-  await fetch('http://127.0.0.1:5000/patient/', {
+  await fetch(GlobalURL + '/patient/', {
     method: 'Post',
   body: JSON.stringify({
     titel: document.getElementById('titel').value,
@@ -128,7 +130,7 @@ function editPatient(id) {
     }
   };
 
-  xhttp.open("GET", "http://127.0.0.1:5000/patient/" + id, true);
+  xhttp.open("GET", GlobalURL +"patient/" + id, true);
   xhttp.send();
 
   document.getElementById("editbutton").setAttribute("onclick", "editPatientToDatabase(" + id + ")")
@@ -164,7 +166,7 @@ async function editPatientToDatabase(id) {
 
   date.setHours(date.getHours() + 2);
 
-  await fetch('http://127.0.0.1:5000/patient/' + id, {
+  await fetch(GlobalURL +'patient/' + id, {
     method: 'PUT',
   body: JSON.stringify({
     id: id,
@@ -191,7 +193,7 @@ async function editPatientToDatabase(id) {
 
 async function deletePatientFromDatabase(id) {
 
-  const response = await fetch("http://127.0.0.1:5000/patient/" + id, {
+  const response = await fetch(GlobalURL + "patient/" + id, {
     method: 'DELETE',
     headers: {
       'Content-type': 'application/json'
@@ -235,7 +237,7 @@ function loadArztTable() {
     }
   };
 
-  xhttp.open("GET", "http://127.0.0.1:5000/arzt", true);
+  xhttp.open("GET", GlobalURL + "arzt", true);
   xhttp.send();
 }
 
@@ -299,7 +301,7 @@ function editArzt(id) {
     }
   };
 
-  xhttp.open("GET", "http://127.0.0.1:5000/arzt/" + id, true);
+  xhttp.open("GET", GlobalURL + "arzt/" + id, true);
   xhttp.send();
 
   document.getElementById("editArztbutton").setAttribute("onclick", "editArztToDatabase(" + id + ")")
@@ -333,7 +335,7 @@ function showDeleteConfirmArzt(id) {
 async function editArztToDatabase(id) {
   console.log("ID is:" + id);
 
-  await fetch('http://127.0.0.1:5000/arzt/' + id, {
+  await fetch(GlobalURL + 'arzt/' + id, {
    method: 'PUT',
   body: JSON.stringify({
     id: id,
@@ -362,7 +364,7 @@ async function editArztToDatabase(id) {
 
 async function deleteArztFromDatabase(id) {
 
-  const response = await fetch("http://127.0.0.1:5000/arzt/" + id, {
+  const response = await fetch(GlobalURL + "arzt/" + id, {
     method: 'DELETE',
     headers: {
       'Content-type': 'application/json'
@@ -410,7 +412,7 @@ function showTermine(id) {
     }
   };
  
-  xhttp.open("GET", "http://127.0.0.1:5000/arzt/" + id, true);
+  xhttp.open("GET", GlobalURL + "arzt/" + id, true);
   xhttp.send();
   document.getElementById("TerminInputs").innerHTML = "<a>Von: </a> <input id='vonTermin' onchange='getTerminData(" + id  + ")' value='1970-01-01' type='date'> <a>Bis: </a> <input id='bisTermin' onchange='getTerminData(" + id + ")' value='2022-01-01' type='date'>"
 }
@@ -425,8 +427,8 @@ function getTerminData(id) {
   console.log("Von Termin: " + fromDate)
   console.log("Bis Termin: " + toDate)
 
-  xhttp.open("GET", "http://127.0.0.1:5000/termin/arzt/" + id + "/?from=" + fromDate.toISOString().split('T')[0] +"&to=" + toDate.toISOString().split('T')[0], true);
-  xhttpPatient.open("GET", "http://127.0.0.1:5000/patient/", true);
+  xhttp.open("GET", GlobalURL +"termin/arzt/" + id + "/?from=" + fromDate.toISOString().split('T')[0] +"&to=" + toDate.toISOString().split('T')[0], true);
+  xhttpPatient.open("GET", GlobalURL + "patient/", true);
   xhttpPatient.send();
   
   var patientData = [];
@@ -580,7 +582,7 @@ function changeRadioButton(id) {
 }
 
 async function deleteTermin(tid, aid) {
-    const response = await fetch("http://127.0.0.1:5000/termin/" + tid, {
+    const response = await fetch(GlobalURL +"termin/" + tid, {
       method: 'DELETE',
       headers: {
         'Content-type': 'application/json'
@@ -605,7 +607,7 @@ function showNewTermine(aid) {
     }
   };
 
-  xhttp.open("GET", "http://127.0.0.1:5000/arzt/" + aid, true);
+  xhttp.open("GET", GlobalURL + "arzt/" + aid, true);
   xhttp.send();
 }
 
@@ -629,7 +631,7 @@ async function newTerminSlot(aid) {
   var xhttpValidation = new XMLHttpRequest();
   //set end 1 day higher to get Data, then set it back to original state
   end.setDate(end.getDate() + 1);
-  xhttpValidation.open("GET", "http://127.0.0.1:5000/termin/arzt/" + aid + "/?from=" + datum.toISOString().split('T')[0] +"&to=" + end.toISOString().split('T')[0], true);
+  xhttpValidation.open("GET", GlobalURL +"termin/arzt/" + aid + "/?from=" + datum.toISOString().split('T')[0] +"&to=" + end.toISOString().split('T')[0], true);
   end.setDate(end.getDate() - 1);
   console.log("2. Adding new Terminslot with: " + end)
   xhttpValidation.onreadystatechange = function() {	  
@@ -684,7 +686,7 @@ async function newTerminSlot(aid) {
     }
   };
   var xhttp = new XMLHttpRequest();
-  xhttp.open("POST", "http://127.0.0.1:5000/termin/arzt/" + aid, true);
+  xhttp.open("POST", GlobalURL + "termin/arzt/" + aid, true);
   xhttpValidation.send();
 
   
@@ -731,7 +733,7 @@ function showTerminePatient(pid) {
     }
   };
  
-  xhttp.open("GET", "http://127.0.0.1:5000/patient/" + pid, true);
+  xhttp.open("GET", GlobalURL + "patient/" + pid, true);
   xhttp.send();
   document.getElementById("TerminInputs").innerHTML = "<a>Von: </a> <input id='vonTermin' onchange='getPatientTerminData(" + pid  + ")' value='1970-01-01' type='date'> <a>Bis: </a> <input id='bisTermin' onchange='getPatientTerminData(" + pid + ")' value='2022-01-01' type='date'>"
 }
@@ -746,8 +748,8 @@ function getPatientTerminData(pid) {
   console.log("Von Termin: " + fromDate)
   console.log("Bis Termin: " + toDate)
 
-  xhttp.open("GET", "http://127.0.0.1:5000/termin/patient/" + pid + "/?from=" + fromDate.toISOString().split('T')[0] +"&to=" + toDate.toISOString().split('T')[0], true);
-  xhttpArzt.open("GET", "http://127.0.0.1:5000/arzt/", true);
+  xhttp.open("GET", GlobalURL + "termin/patient/" + pid + "/?from=" + fromDate.toISOString().split('T')[0] +"&to=" + toDate.toISOString().split('T')[0], true);
+  xhttpArzt.open("GET", GlobalURL +"arzt/", true);
   xhttpArzt.send();
   
   var arztData = [];
@@ -858,7 +860,7 @@ function showTerminSlots(pid, buildSelect) {
   console.log("Bis Termin: " + toDate)
 
 
-  xhttpArzt.open("GET", "http://127.0.0.1:5000/arzt/", true);
+  xhttpArzt.open("GET", GlobalURL + "arzt/", true);
   xhttpArzt.send();
   
   var arztData = [];
@@ -882,7 +884,7 @@ function showTerminSlots(pid, buildSelect) {
       
       let selectedArztId = document.getElementById("aerzteselect").value;
 
-      xhttp.open("GET", "http://127.0.0.1:5000/termin/arzt/" + selectedArztId + "/?from=" + fromDate.toISOString().split('T')[0] +"&to=" + toDate.toISOString().split('T')[0], true);
+      xhttp.open("GET", GlobalURL +"termin/arzt/" + selectedArztId + "/?from=" + fromDate.toISOString().split('T')[0] +"&to=" + toDate.toISOString().split('T')[0], true);
       xhttp.send();
     }
   };
@@ -971,7 +973,7 @@ function showTerminSlots(pid, buildSelect) {
 
 async function terminBuchen(tid, pid) {
   console.log("Buche Temrin für tid: " + tid);
-  const response = await fetch("http://127.0.0.1:5000/termin/" + tid + "/" + pid, {
+  const response = await fetch(GlobalURL +"termin/" + tid + "/" + pid, {
     method: 'Put',
     headers: {
       'Content-type': 'application/json'
